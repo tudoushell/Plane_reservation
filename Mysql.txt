@@ -1,0 +1,45 @@
+
+//创建航班数据库
+create database flight_reservation;
+
+//创建管理员信息表
+create table admin(
+	id varchar(18) primary key,
+	login_name varchar(20) not null unique,
+	password varchar(20)  not null,
+	name varchar(20) not null,
+	phone_number varchar(20) not null
+);
+
+//创建航班信息表
+create table flight(
+	flight_number varchar(10) not null,
+	takeoff_time   datetime  not null,
+	flying_time varchar(20) not null,
+	start_place varchar(20) not null,
+	end_place varchar(20) not null,
+	tickets  int not null,
+	price float not null
+);
+
+//创建用户信息表
+create table user(
+	id varchar(18) not null,
+	name varchar(10) not null,
+	login_name varchar(10) not null,
+	password varchar(16) not null,
+	phone_number varchar(11) not null,
+	address varchar(30) not null
+);
+
+//创建购票信息表
+create table order_ticket (
+	order_number int not null,
+	flight_number varchar(10) not null,
+	start_place varchar(20) not null,
+	end_place varchar(20) not null,
+	takeoff_time datetime not null,
+	price float not null,
+	passenger_name  varchar(40) not null,
+	passenger_id   varchar(20) not null
+);
