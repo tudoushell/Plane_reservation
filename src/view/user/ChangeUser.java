@@ -23,6 +23,7 @@ import manager.Impl.UserManagerImp;
 public class ChangeUser extends JFrame{
 	
 	// 标签
+	JLabel spwd = new JLabel("输入原密码：");
 	JLabel passWord = new JLabel("输入密码：");
 	JLabel confirmPw = new JLabel("确认密码：");
 	JLabel name = new JLabel("真实姓名：");
@@ -32,6 +33,7 @@ public class ChangeUser extends JFrame{
 	JLabel Id = new JLabel("身份证号：");
 	
 	//输入框
+	JTextField spwdText = new JPasswordField(16);
 	JTextField pwdText = new JPasswordField(16);
 	JTextField cpwdText = new JPasswordField(16);
 	JTextField nameText = new JTextField(16);
@@ -41,6 +43,7 @@ public class ChangeUser extends JFrame{
 	
 	//面板
 	JPanel regPanel = new JPanel();
+	JPanel spwdPanel = new JPanel();
 	JPanel pwdP = new JPanel();
 	JPanel cwdP = new JPanel();
 	JPanel nameP = new JPanel();
@@ -69,9 +72,10 @@ public class ChangeUser extends JFrame{
 			
 			public void actionPerformed(ActionEvent e) {
 				//	1.先获取表单中的数据
+				String spwd = spwdText.getText();
 				String pwd = pwdText.getText();
 				String cwd =  cpwdText.getText();
-				String  	name = nameText.getText();
+				String name = nameText.getText();
 				String phone = phoneText.getText();
 				String address = addresText.getText();
 				String id = idText.getText();
@@ -80,18 +84,54 @@ public class ChangeUser extends JFrame{
 				String regPwd = "\\w{6,14}";
 				String regId = "[0-9]{18}";
 				String regPhone = "[0-9]{11}";
-				if(!pwd.matches(regPwd)){
-					JOptionPane.showMessageDialog(null, "您输入的密码不规范！");
-					return;
-				}
-				if(!pwd.equals(cwd)){
-					JOptionPane.showMessageDialog(null, "您输入的密码不一致！");
+				String pawd = null;
+				UserManager userManager = new UserManagerImp();
+				
+		
+				try {
+					User userp = userManager.getUserByLoginName(loginName);
+					 pawd = userp.getPassWord();
+					 //原密码
+					 if(spwd.length() == 0){
+						 JOptionPane.showMessageDialog(null, "您输入的原密码不能为空");
+							return;
+					 }else{
+							if(!spwd.equals(pawd)){
+								JOptionPane.showMessageDialog(null, "你输入的密码原密码不对");
+								return;
+							}
+					 }
+					 if(pwd.length() == 0){
+						 JOptionPane.showMessageDialog(null, "您输入的密码不能为空");
+							return;
+					 }else{
+						 if(pwd.equals(pawd)){
+							 JOptionPane.showMessageDialog(null, "你输入的密码密码不能跟之前的密码相同");
+								return;
+						 }
+					 }
+					 	
+						if(!pwd.matches(regPwd)){
+							JOptionPane.showMessageDialog(null, "您输入的密码不规范！");
+							return;
+						}
+						if(!pwd.equals(cwd)){
+							JOptionPane.showMessageDialog(null, "您输入的密码不一致！");
+							return;
+						}
+					 
+					 
+					 
+				} catch (PlaneException e1) {
+					e1.printStackTrace();
 				}
 				if(!id.matches(regId)){
 					JOptionPane.showMessageDialog(null, "您输入身份证号18位格式不对！");
+					return;
 				}
 				if(!phone.matches(regPhone)){
 					JOptionPane.showMessageDialog(null, "您输入手机号格式不对！");
+					return;
 				}
 				//	3.新建一个user类，将所有修改的信息存入user类
 				User user = new User();
@@ -103,7 +143,6 @@ public class ChangeUser extends JFrame{
 				user.setAddress(address);				
 				
 				//	4.调用UserManagerImp类中 UpDateUser(User user) 方法来进行修改
-				UserManager userManager = new UserManagerImp();
 				boolean flag = userManager.UpDateUser(user);
 				
 				//5.返回是否修改成功，成功后返回到用户功能页面
@@ -128,6 +167,8 @@ public class ChangeUser extends JFrame{
 	
 	//添加组件的同时，获取数据库中用户的信息
 	public void addComponent(){
+		spwdPanel.add(spwd);
+		spwdPanel.add(spwdText);
 		//将所有的组件添加到面板中
 		pwdP.add(passWord);
 		pwdP.add(pwdText);
@@ -155,7 +196,8 @@ public class ChangeUser extends JFrame{
 		btnP.add(btChange);
 		btnP.add(btExit);
 		
-		regPanel.setLayout(new GridLayout(8, 1));
+		regPanel.setLayout(new GridLayout(9, 1));
+		regPanel.add(spwdPanel);
 		regPanel.add(pwdP);
 		regPanel.add(cwdP);
 		regPanel.add(nameP);

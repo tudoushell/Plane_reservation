@@ -141,11 +141,13 @@ public class RegisterPage extends JFrame {
 				// 用于判断登录名是否存在
 				if (!loginName.matches(reg)) {
 					JOptionPane.showMessageDialog(null, "请输入长度为6－14的字母数字");
+					return;
 				} else {
 					try {
 						boolean flag = userManager.isLoginName(loginName);
 						if (flag == true) {
 							JOptionPane.showMessageDialog(null, "该登录名已存在");
+							return;
 						}
 					} catch (PlaneException e1) {
 						e1.printStackTrace();
@@ -161,6 +163,7 @@ public class RegisterPage extends JFrame {
 
 				} else if (!passwd.equals(cpwd)) {
 					JOptionPane.showMessageDialog(null, "密码不一致");
+					return;
 				}
 
 				// 匹配姓名
@@ -168,6 +171,7 @@ public class RegisterPage extends JFrame {
 				System.out.println(names);
 				if (names.length() == 0) {
 					JOptionPane.showMessageDialog(null, "姓名不能为空！");
+					return;
 
 				}
 				// 匹配身份证号
@@ -175,6 +179,7 @@ public class RegisterPage extends JFrame {
 				String regId = "[0-9]{18}";
 				if (!ids.matches(regId)) {
 					JOptionPane.showMessageDialog(null, "请输入18位数字的身份证号");
+					return;
 				}
 
 				// 匹配电话号
@@ -182,6 +187,7 @@ public class RegisterPage extends JFrame {
 				String regPhone = "[0-9]{11}";
 				if (!phoneN.matches(regPhone)) {
 					JOptionPane.showMessageDialog(null, "请输入11位数字的电话");
+					return;
 				}
 
 				// 匹配电子邮箱
@@ -189,6 +195,7 @@ public class RegisterPage extends JFrame {
 				String regEmail = "^[a-zA-Z0-9_]+@[a-zA-Z0-9]{2,}\\.(com||cn||org)+$";
 				if (!emails.matches(regEmail)) {
 					JOptionPane.showMessageDialog(null, "请输入正确的邮箱地址");
+					return;
 				}
 
 				// 获取性别信息

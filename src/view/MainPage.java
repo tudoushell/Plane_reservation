@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import view.admin.AdminLogin;
 import view.user.RegisterPage;
 import view.user.UserLogin;
 
@@ -21,7 +22,7 @@ public class MainPage extends JFrame{
 	JButton btn_login = null;
 	JButton btn_register = null;
 	JButton btn_admin = null;
-	//
+	//按钮面板
 	JPanel btn_panel = null;
 
 	//界面初始化
@@ -48,6 +49,15 @@ public class MainPage extends JFrame{
 	}
 	
 	public void addAction(){
+		//管理员登录事件 
+		btn_admin.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				new AdminLogin();
+			}
+		});
+		
 		//会员注册按钮事件
 		btn_register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -58,7 +68,6 @@ public class MainPage extends JFrame{
 		
 		//会员登录事件
 		btn_login.addActionListener(new ActionListener() {
-			
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				new UserLogin();

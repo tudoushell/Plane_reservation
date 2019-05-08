@@ -3,6 +3,10 @@ package manager.Impl;
 import java.sql.SQLException;
 import java.util.List;
 
+import objectfactory.ObjectFactory;
+
+
+
 import Dao.FlightDao;
 import Dao.OrderTicketDao;
 import Dao.Impl.FlightDaoImpl;
@@ -14,35 +18,38 @@ import util.*;
 public class OrderTicketManagerImp implements OrderTicketManager{
 	
 	private Transaction transaction = new TransactionImpl ();
-	private FlightDao flightDao = new FlightDaoImpl();
-	private OrderTicketDao  orderTicketImp = new OrderTicketDaoImpl();
-	
-	
+//	private FlightDao flightDao = new FlightDaoImpl();
+//	private OrderTicketDao  orderTicketImp = new OrderTicketDaoImpl();
+	OrderTicketDao orderTicketImp = (OrderTicketDao) ObjectFactory.getObject("OrderTicketDao");
+	FlightDao flightDao = (FlightDao) ObjectFactory.getObject("FlightDao");
+	Transaction transcation = (Transaction) ObjectFactory.getObject("transaction");
 	/**
-	 * 改签订单
+	 * 改签订单/退票功能
 	 */
 	public boolean changeOrders(int orderNumber, String loginName,String flightId) throws SQLException {
 		transaction.start();
 		// 1.有则根据用户名和订单号将Order_ticket中的数据删除
-		orderTicketImp.delOrderById(orderNumber, loginName);
-		
-		// 2.在根据航班号将Fligh表中的ticket加1
-		Flight flight = flightDao.getFlightById(flightId);
-		int ticket = flight.getTickets();
-		flight.setTickets(ticket+1);
-		
-		//3.将航班信息更新
-		boolean flag = flightDao.upDateFlight(flight);
-		
-		transaction.commit();
-		if(flag){
-			System.out.println("更新成功");
-			return true;
+		if(orderNumber > 0 && loginName.length() != 0 && flightId.length() !=0){
+			orderTicketImp.delOrderById(orderNumber, loginName);
+			// 2.在根据航班号将Fligh表中的ticket加1
+			Flight flight = flightDao.getFlightById(flightId);
+			int ticket = flight.getTickets();
+			flight.setTickets(ticket+1);
+			
+			//3.将航班信息更新
+			boolean flag = flightDao.upDateFlight(flight);
+			
+			transaction.commit();
+			if(flag){
+				System.out.println("更新成功");
+				return true;
+			}else{
+				transaction.rollback();
+				return false;
+			}
 		}else{
-			transaction.rollback();
 			return false;
 		}
-		
 	}
 	
 	

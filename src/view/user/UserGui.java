@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import view.flight.ListAndOrderFilght;
 import view.order.ListAndChangeOrder;
+import view.order.RefundTicket;
 
 public class UserGui extends JFrame{
 	/**
@@ -61,6 +62,15 @@ public class UserGui extends JFrame{
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					new ListAndChangeOrder(loginName);
+				}
+			});
+			
+			//退票
+			refund.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					new RefundTicket(loginName);
 				}
 			});
 		

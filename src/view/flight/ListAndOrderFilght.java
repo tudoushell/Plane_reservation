@@ -95,11 +95,25 @@ public class ListAndOrderFilght extends JFrame{
 						//	1.获取前台的数据,先判断当前有没有票，有才进行操作
 						JOptionPane.showMessageDialog(null, "当前票不足");
 					}else{
+						
+						/***新添加的功能***/
+						String names = JOptionPane.showInputDialog(null,"请输入购票姓名：","姓名",JOptionPane.PLAIN_MESSAGE,null,null,null).toString();
+						String  passengerId = JOptionPane.showInputDialog(null,"请输入购票身份证号：","身份证号",JOptionPane.PLAIN_MESSAGE,null,null,null).toString();
+						if(names.length() == 0){
+							JOptionPane.showMessageDialog(null, "请输入姓名");
+							return ;
+						}
+						if(passengerId.length() == 0){
+							JOptionPane.showMessageDialog(null, "请输入身份证号");
+							return ;
+						}
+						/*******/
+						
 						UserManager userManager = new UserManagerImp();
 						OrderTicketManager addOrder =  new OrderTicketManagerImp();
 						//获取用户身份证
-						User user = userManager.getUserByLoginName(loginName);
-						String passengerId = user.getId();
+//						User user = userManager.getUserByLoginName(loginName);
+//						String passengerId = user.getId();
 						//2.预订之后将预订后的信息存入orderTicket对象中
 						float price = Float.parseFloat(info[6]);
 						OrderTicket order = new OrderTicket();
@@ -110,6 +124,11 @@ public class ListAndOrderFilght extends JFrame{
 						order.setPrice(price);
 						order.setPassenger_name(loginName);
 						order.setPassenger_id(passengerId);
+						
+						/*新添加的*/
+						order.setName(names);
+						/**/
+						
 						//将订单信息添加数据库中,并更新界面
 						boolean flag = 	addOrder.addOrder(order,info[0]);
 						if(flag){
@@ -120,19 +139,17 @@ public class ListAndOrderFilght extends JFrame{
 						}else{
 							JOptionPane.showMessageDialog(null, "预订失败！");
 						}
-						
 					}
 				}catch(NullPointerException e1){
 					JOptionPane.showMessageDialog(null, "请选择航班");
 				}catch(ArrayIndexOutOfBoundsException e2){
 					JOptionPane.showMessageDialog(null, "请选择航班");
-				} catch (PlaneException e2) {
-					e2.printStackTrace();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
 				
 			}
+			
 		});
 		
 		

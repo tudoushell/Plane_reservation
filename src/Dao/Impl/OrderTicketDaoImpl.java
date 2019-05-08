@@ -34,16 +34,27 @@ public class OrderTicketDaoImpl implements OrderTicketDao{
 	 * 添加一个订票
 	 */
 	public boolean addOrder(OrderTicket orderTicket) {
-		String sql = " insert into order_ticket values(?,?,?,?,?,?,?,?)";
+//		String sql = " insert into order_ticket values(?,?,?,?,?,?,?,?)";
+		
+		String sql = " insert into order_ticket values(?,?,?,?,?,?,?,?,?)";
 		try{
+//			int flag = JDBCUtil.executeUpdate(sql, orderTicket.getOrder_number(),
+//														  orderTicket.getFlight_number(),
+//														  orderTicket.getStart_place(),
+//														  orderTicket.getEnd_place(),
+//														  orderTicket.getTakeoff_time(),
+//														  orderTicket.getPrice(),
+//														  orderTicket.getPassenger_name(),
+//														  orderTicket.getPassenger_id());
 			int flag = JDBCUtil.executeUpdate(sql, orderTicket.getOrder_number(),
-														  orderTicket.getFlight_number(),
-														  orderTicket.getStart_place(),
-														  orderTicket.getEnd_place(),
-														  orderTicket.getTakeoff_time(),
-														  orderTicket.getPrice(),
-														  orderTicket.getPassenger_name(),
-														  orderTicket.getPassenger_id());
+					  orderTicket.getFlight_number(),
+					  orderTicket.getStart_place(),
+					  orderTicket.getEnd_place(),
+					  orderTicket.getTakeoff_time(),
+					  orderTicket.getPrice(),
+					  orderTicket.getPassenger_name(),
+					  orderTicket.getPassenger_id(),
+					  orderTicket.getName());
 			if(flag != 0){
 				return true;
 			}
@@ -96,23 +107,42 @@ public class OrderTicketDaoImpl implements OrderTicketDao{
 	 */
 	
 	public boolean upDateOrderByloginName(OrderTicket orderTicket) {
+//		String sql = "update order_ticket set  order_number=?," +
+//																	"flight_number=?," +
+//																	"start_place=?," +
+//																	"end_place=?," +
+//																	"takeoff_time=?," +
+//																	"price=?," +
+//																	"passenger_id=?" +
+//																	"where  passenger_name =?";
 		String sql = "update order_ticket set  order_number=?," +
-																	"flight_number=?," +
-																	"start_place=?," +
-																	"end_place=?," +
-																	"takeoff_time=?," +
-																	"price=?," +
-																	"passenger_id=?" +
-																	"where  passenger_name =?";
+							"flight_number=?," +
+							"start_place=?," +
+							"end_place=?," +
+							"takeoff_time=?," +
+							"price=?," +
+							"passenger_id=?" +
+							"name="+
+							"where  passenger_name =?";
 		try{
+//			int flag = JDBCUtil.executeUpdate(sql,  orderTicket.getOrder_number(),
+//																			orderTicket.getFlight_number(),
+//																			orderTicket.getStart_place(),
+//																			orderTicket.getEnd_place(),
+//																			orderTicket.getTakeoff_time(),
+//																			orderTicket.getPrice(),
+//																			orderTicket.getPassenger_name(),
+//																			orderTicket.getPassenger_id());
+			
 			int flag = JDBCUtil.executeUpdate(sql,  orderTicket.getOrder_number(),
-																			orderTicket.getFlight_number(),
-																			orderTicket.getStart_place(),
-																			orderTicket.getEnd_place(),
-																			orderTicket.getTakeoff_time(),
-																			orderTicket.getPrice(),
-																			orderTicket.getPassenger_name(),
-																			orderTicket.getPassenger_id());
+					orderTicket.getFlight_number(),
+					orderTicket.getStart_place(),
+					orderTicket.getEnd_place(),
+					orderTicket.getTakeoff_time(),
+					orderTicket.getPrice(),
+					orderTicket.getPassenger_name(),
+					orderTicket.getPassenger_id(),
+					orderTicket.getName());
 			if(flag != 0){
 				return true;
 			}

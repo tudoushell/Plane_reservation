@@ -17,17 +17,40 @@ public class OrderTicket {
 	private String takeoff_time;
 	//票价
 	private float price;
-	//乘客姓名 
+	//登录名 
 	private String passenger_name;
 	//乘客身份证
 	private String passenger_id;
+	//乘客姓名
+	private String name;
 	
 	
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public OrderTicket() {
 		super();
 	}
 	
+	public OrderTicket(int orderNumber, String flightNumber, String startPlace, String endPlace, String takeoffTime, float price, String passengerName, String passengerId, String name) {
+		super();
+		order_number = orderNumber;
+		flight_number = flightNumber;
+		start_place = startPlace;
+		end_place = endPlace;
+		takeoff_time = takeoffTime;
+		this.price = price;
+		passenger_name = passengerName;
+		passenger_id = passengerId;
+		this.name = name;
+	}
+	//new 
 	public OrderTicket(int orderNumber, String flightNumber, String startPlace, String endPlace, String takeoffTime, float price, String passengerName, String passengerId) {
 		super();
 		order_number = orderNumber;
@@ -39,6 +62,7 @@ public class OrderTicket {
 		passenger_name = passengerName;
 		passenger_id = passengerId;
 	}
+	
 	public int getOrder_number() {
 		return order_number;
 	}
@@ -87,11 +111,18 @@ public class OrderTicket {
 	public void setPassenger_id(String passengerId) {
 		passenger_id = passengerId;
 	}
+//	@Override
+//	public String toString() {
+//		return "OrderTicket [end_place=" + end_place + ", flight_number=" + flight_number + ", order_number=" + order_number + ", passenger_id=" + passenger_id + ", passenger_name=" + passenger_name
+//				+ ", price=" + price + ", start_place=" + start_place + ", takeoff_time=" + takeoff_time + "]";
+//	}
+
 	@Override
 	public String toString() {
-		return "OrderTicket [end_place=" + end_place + ", flight_number=" + flight_number + ", order_number=" + order_number + ", passenger_id=" + passenger_id + ", passenger_name=" + passenger_name
-				+ ", price=" + price + ", start_place=" + start_place + ", takeoff_time=" + takeoff_time + "]";
+		return "OrderTicket [end_place=" + end_place + ", flight_number=" + flight_number + ", name=" + name + ", order_number=" + order_number + ", passenger_id=" + passenger_id
+				+ ", passenger_name=" + passenger_name + ", price=" + price + ", start_place=" + start_place + ", takeoff_time=" + takeoff_time + "]";
 	}
+	
 	
 	
 	

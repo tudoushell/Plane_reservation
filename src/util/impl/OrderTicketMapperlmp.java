@@ -19,6 +19,7 @@ public class OrderTicketMapperlmp implements RowMapperObject{
 		orderTicket.setPrice(rs.getFloat("price"));
 		orderTicket.setPassenger_name(rs.getString("passenger_name"));
 		orderTicket.setPassenger_id(rs.getString("passenger_id"));
+		orderTicket.setName(rs.getString("name"));
 		return orderTicket;
 	}
 

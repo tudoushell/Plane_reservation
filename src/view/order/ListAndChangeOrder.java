@@ -23,6 +23,8 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 
+import objectfactory.ObjectFactory;
+
 import Dao.OrderTicketDao;
 
 import manager.FlightManger;
@@ -39,6 +41,8 @@ import exception.PlaneException;
 import view.user.UserGui;
 
 public class ListAndChangeOrder extends JFrame{
+	OrderTicketManager orderTicketManager = (OrderTicketManager) ObjectFactory.getObject("OrderTicketManager");
+
 	String loginName;
 	String info[] = null;
 	JTextArea orderMsg=new JTextArea("订单号\t航班号\t  用户名\t  出发地\t  目的地\t  起飞时间\n");
@@ -72,18 +76,24 @@ public class ListAndChangeOrder extends JFrame{
 			Iterator<OrderTicket> it = list.iterator();
 			while(it.hasNext()){
 				OrderTicket f = it.next();
+//				orderMsg.append(f.getOrder_number() + "\t  "
+//											+ f.getFlight_number() + " \t  " 
+//											+ f.getPassenger_name() + "\t  "
+//											+ f.getStart_place() +" \t  "
+//											+ f.getEnd_place()+ " \t  "
+//											+f.getTakeoff_time()+"\n"
+//											);
 				orderMsg.append(f.getOrder_number() + "\t  "
-											+ f.getFlight_number() + " \t  " 
-											+ f.getPassenger_name() + "\t  "
-											+ f.getStart_place() +" \t  "
-											+ f.getEnd_place()+ " \t  "
-											+f.getTakeoff_time()+"\n"
-											);
+						+ f.getFlight_number() + " \t  " 
+						+ f.getName() + "\t  "
+						+ f.getStart_place() +" \t  "
+						+ f.getEnd_place()+ " \t  "
+						+f.getTakeoff_time()+"\n"
+						);
 			}
 		}catch(NullPointerException e){
 			JOptionPane.showMessageDialog(null, "该用户没有订单信息");
 		}
-		
 	}
 	
 	//添加事件 
@@ -100,18 +110,19 @@ public class ListAndChangeOrder extends JFrame{
 					String flightId = orderTxArr[1].getText();
 					OrderTicketManager order = new OrderTicketManagerImp();
 					try {
-						FlightManger flight = new FlightManagerImp();
 						//获取没有过期的航班
+						FlightManger flight = new FlightManagerImp();
 						List<Flight>flightList = flight.listFlyFlight();
 						Flight [] flightArr = flightList.toArray(new Flight[flightList.size()]);
-						boolean flag = order.changeOrders(orderNumber, loginName,flightId);
-						
-						//将新的航班添加到和订单添加到用户中
 						//2.获取已选的航班
 						Object obj = JOptionPane.showInputDialog(null,"请选择航班","改签航班",JOptionPane.INFORMATION_MESSAGE,null,flightArr,null);
+						
 						if(obj == null){
+							System.out.println(obj);
 							return;
 						}
+						//删除用户订单并且将flight中的ticket加1
+						boolean flag = order.changeOrders(orderNumber, loginName,flightId);
 						Flight newFlight = (Flight)obj;
 						
 						//3.将新的订单信息写入order_ticket中
@@ -131,6 +142,9 @@ public class ListAndChangeOrder extends JFrame{
 						newOrder.setTakeoff_time(newFlight.getTakeoff_time());
 						newOrder.setPrice(newFlight.getPrice());
 						newOrder.setPassenger_name(loginName);
+						/**/
+						newOrder.setName(orderTxArr[2].getText());
+						/**/
 						newOrder.setPassenger_id(passengerId);
 						
 						// 4.将新的航班信息的ticket减1
@@ -225,7 +239,6 @@ public class ListAndChangeOrder extends JFrame{
 			//列出的用户订单信息
 			listFlight();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
